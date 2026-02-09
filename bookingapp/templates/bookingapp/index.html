@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Sunshine Resort Lonavala</title>
+
+    <style>
+        /* ===== BACKGROUND ===== */
+        body {
+            background-image: url("{% static 'images/bg_home.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .jumbotron {
+            background: rgba(255, 255, 255, 0.88);
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            padding: 12px 0;
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #333;
+            margin: 0 6px;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            left: 0;
+            bottom: -4px;
+            background-color: #198754;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #198754;
+        }
+
+        .navbar .btn-success {
+            border-radius: 30px;
+            padding: 8px 18px;
+            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand" href="/index/">
+                <img src="{% static 'images/logo.png' %}" alt="logo" width="148" height="100">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a href="/index/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/rooms/" class="nav-link">Rooms</a></li>
+                    <li class="nav-item"><a href="/gallery/" class="nav-link">Gallery</a></li>
+                    <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link">Contact</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="/create_booking/" class="btn btn-success">Book Now</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+
+
+<section class="hero-section">
+    <div class="container text-center">
+
+        <div class="jumbotron shadow">
+            <h2 class="mb-3">
+                Wooden Interior With <br>The Pinch Of Everything
+            </h2>
+
+            <p class="lead">
+                Enter your little slice of paradise via a wooden decked room,
+                surrounded by lush green lawns, birdsong, and a bubbling creek.
+            </p>
+
+            <div class="mt-4 d-flex justify-content-center flex-wrap gap-3">
+                <a href="/create_booking/" class="btn btn-success">
+                    Book Now
+                </a>
+
+                <a href="/display_booking/" class="btn btn-outline-success">
+                    Display Booking
+                </a>
+
+               
+                <a href="/display_booking/" class="btn btn-primary">
+                    Manage Bookings
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>

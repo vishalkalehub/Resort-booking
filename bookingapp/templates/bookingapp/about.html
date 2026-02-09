@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | Sunshine Resort</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* ================= FULL PAGE BACKGROUND ================= */
+        body {
+            background-image: url("{% static 'images/about-bg.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .page-overlay {
+            background: rgba(0, 0, 0, 0.55);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            padding: 12px 0;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #333;
+            margin: 0 6px;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            left: 0;
+            bottom: -4px;
+            background-color: #198754;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: #198754;
+            font-weight: 600;
+        }
+
+        /* ================= HERO ================= */
+        .about-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        /* ================= CONTENT ================= */
+        .content-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .about-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .icon-box {
+            font-size: 36px;
+            color: #198754;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page-overlay">
+
+<!-- ================= NAVBAR ================= -->
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand" href="/index/">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="70">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a href="/index/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/rooms/" class="nav-link">Rooms</a></li>
+                    <li class="nav-item"><a href="/gallery/" class="nav-link">Gallery</a></li>
+                    <li class="nav-item"><a href="/about/" class="nav-link active">About</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link">Contact</a></li>
+
+                    <li class="nav-item ms-3">
+                        <a href="/create_booking/" class="btn btn-success rounded-pill px-4">
+                            Book Now
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="about-hero">
+    <div>
+        <h1 class="fw-bold mb-3">About Sunshine Resort</h1>
+        <p class="lead">
+            A perfect blend of luxury, comfort, and nature
+        </p>
+    </div>
+</section>
+
+<!-- ================= ABOUT SECTION ================= -->
+<main class="container my-5 content-box">
+
+    <div class="text-center mb-5">
+        <h2> Sunshine Resort </h2>
+        <p class="text-muted">
+            Experience comfort, luxury, and unforgettable hospitality
+        </p>
+    </div>
+
+    <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+            <img src="{% static 'images/about_resort.jpg' %}"
+                 class="img-fluid rounded-4 shadow-sm"
+                 alt="About Resort">
+        </div>
+
+        <div class="col-md-6">
+            <div class="about-box">
+                <p>
+                    Sunshine Resort is a premium holiday destination designed to provide
+                    guests with peace, comfort, and world-class service.
+                </p>
+
+                <p>
+                    Our mission is to create memorable experiences through exceptional
+                    hospitality, elegant rooms, delicious cuisine, and personalized services.
+                </p>
+
+                <div class="row text-center mt-4">
+                    <div class="col-4">
+                        <div class="icon-box">🏨</div>
+                        <p class="fw-semibold">Luxury Rooms</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon-box">🌿</div>
+                        <p class="fw-semibold">Eco Friendly</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="icon-box">⭐</div>
+                        <p class="fw-semibold">5-Star Service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

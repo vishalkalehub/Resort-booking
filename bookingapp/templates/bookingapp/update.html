@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Booking</title>
+</head>
+<body>
+
+<h2>Update Booking</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="f_name" value="{{ booking.name }}" required><br><br>
+    <input type="email" name="Email" value="{{ booking.email }}" required><br><br>
+
+    <input type="date" name="check_in" value="{{ booking.check_in|date:'Y-m-d' }}" required><br><br>
+    <input type="date" name="check_out" value="{{ booking.check_out|date:'Y-m-d' }}" required><br><br>
+
+    <input type="number" name="No_of_Person" value="{{ booking.t_persons }}" required><br><br>
+    <input type="number" name="No_of_Rooms" value="{{ booking.t_rooms }}" required><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+</body>
+</html>
