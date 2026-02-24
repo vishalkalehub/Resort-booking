@@ -1,218 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'bookingapp/base.html' %}
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+{% block content %}
 
-    <title>Book Your Room | Sunshine Resort</title>
+<div class="row justify-content-center fade-in">
+    <div class="col-md-8">
 
-    
-    <style>
-    /* ===== NAVBAR STYLING ===== */
-    .navbar {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(6px); /* modern glass effect */
-        padding: 12px 0;
-    }
+        <div class="glass-card p-5">
 
-    .navbar-brand img {
-        transition: transform 0.3s ease;
-    }
+            <h2 class="text-center mb-4">Reserve Your Luxury Stay</h2>
 
-    .navbar-brand img:hover {
-        transform: scale(1.05);
-    }
+            <form method="POST">
+                {% csrf_token %}
 
-    .navbar-nav .nav-link {
-        font-weight: 500;
-        color: #333;
-        margin: 0 6px;
-        position: relative;
-    }
+                <div class="mb-3">
+                    <label>Select Room</label>
+                    {{ form.room }}
+                    {{ form.room.errors }}
+                </div>
 
-    /* underline animation */
-    .navbar-nav .nav-link::after {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 2px;
-        left: 0;
-        bottom: -4px;
-        background-color: #198754; /* bootstrap success */
-        transition: width 0.3s ease;
-    }
+                <div class="mb-3">
+                    <label>Full Name</label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
 
-    .navbar-nav .nav-link:hover::after {
-        width: 100%;
-    }
-
-    .navbar-nav .nav-link:hover {
-        color: #198754;
-    }
-
-    /* Active page */
-    .navbar-nav .nav-link.active {
-        color: #198754;
-        font-weight: 600;
-    }
-
-    /* Book Now Button */
-    .navbar .btn-success {
-        border-radius: 30px;
-        padding: 8px 18px;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
-        transition: all 0.3s ease;
-    }
-
-    .navbar .btn-success:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(25, 135, 84, 0.45);
-    }
-</style>
-
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<header class="sticky-top">
-    <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
-        <div class="container">
-
-            <!-- Logo -->
-            <a class="navbar-brand" href="/index/">
-                <img src="{% static 'images/logo.png' %}" alt="logo" width="120">
-            </a>
-
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menu -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item">
-                        <a href="/index/" class="nav-link active">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/rooms/" class="nav-link">Rooms</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/gallery/" class="nav-link">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/about/" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/contact/" class="nav-link">Contact</a>
-                    </li>
-
-                    
-                    <li class="nav-item ms-3">
-                        <a href="/create_booking/" class="btn btn-success">
-                            Book Now
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </nav>
-</header>
-
-
-<!-- MAIN CONTENT -->
-<main class="container page-wrapper">
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-6">
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-
-                    <h2 class="text-center mb-4">Book Your Room</h2>
-
-                    <form method="POST" href = "/display_booking/">
-                        {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label>Full Name</label>
-                            <input type="text" name="f_name"
-                                   class="form-control"
-                                   placeholder="Enter your full name"
-                                   required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" name="Email"
-                                   class="form-control"
-                                   placeholder="Enter your email"
-                                   required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Check-in Date</label>
-                            <input type="date" name="check_in"
-                                class="form-control"
-                                min="{{ today }}"
-                                required>
-                        </div>
-
-                        <!-- Check-out Date -->
-                        <div class="mb-3">
-                            <label>Check-out Date</label>
-                            <input type="date" name="check_out"
-                                class="form-control"
-                                min="{{ today }}"
-                                required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>No of Persons</label>
-                            <select name="No_of_Person" class="form-select" required>
-                                <option value="">Select</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>3</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label>No of Days</label>
-                            <input type="number" name="No_of_Rooms"
-                                   class="form-control"
-                                   placeholder="Enter number of days"
-                                   min="1"
-                                   required>
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success">
-                                Confirm Booking
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-3">
+                    <label>Email</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
 
                 </div>
-            </div>
+
+                <div class="mb-3">
+                    <label>Check-in</label>
+                    {{ form.check_in }}
+                    {{ form.check_in.errors }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Check-out</label>
+                    {{ form.check_out }}
+                    {{ form.check_out.errors }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Persons</label>
+                    {{ form.persons }}
+                    {{ form.person.errors }}
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Confirm Booking
+                </button>
+            </form>
 
         </div>
+
     </div>
-</main>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+form input, form select {
+    border-radius: 12px !important;
+    padding: 10px;
+}
+</style>
 
-</body>
-</html>
+{% endblock %}

@@ -1,153 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'bookingapp/base.html' %}
+{% load static %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
 
-    <title>Sunshine Resort Lonavala</title>
+<!-- HERO SECTION -->
+<section class="hero-section text-white text-center fade-in">
+    <div class="hero-overlay d-flex flex-column justify-content-center align-items-center">
+        <h1 class="display-4 fw-bold">Experience Luxury & Comfort</h1>
+        <p class="lead mt-3">Escape to Sunshine Resort — Your Perfect Getaway</p>
 
-    <style>
-        /* ===== BACKGROUND ===== */
-        body {
-            background-image: url("{% static 'images/bg_home.jpg' %}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        /* ===== HERO ===== */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .jumbotron {
-            background: rgba(255, 255, 255, 0.88);
-            padding: 40px;
-            border-radius: 12px;
-            max-width: 750px;
-            margin: auto;
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(6px);
-            padding: 12px 0;
-        }
-
-        .navbar-brand img {
-            transition: transform 0.3s ease;
-        }
-
-        .navbar-brand img:hover {
-            transform: scale(1.05);
-        }
-
-        .navbar-nav .nav-link {
-            font-weight: 500;
-            color: #333;
-            margin: 0 6px;
-            position: relative;
-        }
-
-        .navbar-nav .nav-link::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            left: 0;
-            bottom: -4px;
-            background-color: #198754;
-            transition: width 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #198754;
-        }
-
-        .navbar .btn-success {
-            border-radius: 30px;
-            padding: 8px 18px;
-            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
-        }
-    </style>
-</head>
-
-<body>
-
-<!-- ================= NAVBAR ================= -->
-<header class="sticky-top">
-    <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
-        <div class="container">
-
-            <a class="navbar-brand" href="/index/">
-                <img src="{% static 'images/logo.png' %}" alt="logo" width="148" height="100">
+        <div class="mt-4">
+            <a href="{% url 'rooms' %}" class="btn btn-light btn-lg rounded-pill px-4 me-2">
+                Explore Rooms
             </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a href="/index/" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="/rooms/" class="nav-link">Rooms</a></li>
-                    <li class="nav-item"><a href="/gallery/" class="nav-link">Gallery</a></li>
-                    <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="/contact/" class="nav-link">Contact</a></li>
-                    <li class="nav-item ms-3">
-                        <a href="/create_booking/" class="btn btn-success">Book Now</a>
-                    </li>
-                </ul>
-            </div>
-
+            <a href="{% url 'create_booking' %}" class="btn btn-success btn-lg rounded-pill px-4">
+                Book Now
+            </a>
         </div>
-    </nav>
-</header>
+    </div>
+</section>
 
+<!-- FEATURES SECTION -->
+<section class="container my-5">
+    <div class="row text-center g-4">
 
-<section class="hero-section">
-    <div class="container text-center">
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <h4>Luxury Rooms</h4>
+                <p>Modern interiors with scenic mountain views.</p>
+            </div>
+        </div>
 
-        <div class="jumbotron shadow">
-            <h2 class="mb-3">
-                Wooden Interior With <br>The Pinch Of Everything
-            </h2>
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <h4>Infinity Pool</h4>
+                <p>Relax and unwind in our stunning pool area.</p>
+            </div>
+        </div>
 
-            <p class="lead">
-                Enter your little slice of paradise via a wooden decked room,
-                surrounded by lush green lawns, birdsong, and a bubbling creek.
-            </p>
-
-            <div class="mt-4 d-flex justify-content-center flex-wrap gap-3">
-                <a href="/create_booking/" class="btn btn-success">
-                    Book Now
-                </a>
-
-                <a href="/display_booking/" class="btn btn-outline-success">
-                    Display Booking
-                </a>
-
-               
-                <a href="/display_booking/" class="btn btn-primary">
-                    Manage Bookings
-                </a>
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <h4>Fine Dining</h4>
+                <p>World-class cuisine & 5-star hospitality.</p>
             </div>
         </div>
 
     </div>
 </section>
 
-</body>
-</html>
+<!-- QUICK BOOKING SECTION -->
+<section class="hero-section text-white text-center">
+    <div class="hero-overlay d-flex flex-column justify-content-center align-items-center">
+
+        <h1 class="display-4 fw-bold">Experience Luxury & Comfort</h1>
+        <p class="lead mt-3">Escape to Sunshine Resort — Your Perfect Getaway</p>
+
+        <!-- CHECK AVAILABILITY FORM -->
+        <form method="GET" action="{% url 'rooms' %}" 
+              class="row g-2 justify-content-center mt-4">
+
+            <div class="col-md-3">
+                <input type="date" name="check_in" 
+                       class="form-control" required>
+            </div>
+
+            <div class="col-md-3">
+                <input type="date" name="check_out" 
+                       class="form-control" required>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" 
+                        class="btn btn-success w-100">
+                    Check Availability
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="container my-5">
+    <h3 class="text-center mb-4 fade-in">What Our Guests Say</h3>
+
+    <div class="row g-4 text-center">
+
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <p>"Absolutely amazing stay! The rooms were spotless and luxurious."</p>
+                <small class="text-muted">– Rahul Sharma</small>
+            </div>
+        </div>
+
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <p>"Perfect family vacation spot. Highly recommended!"</p>
+                <small class="text-muted">– Sneha Patil</small>
+            </div>
+        </div>
+
+        <div class="col-md-4 fade-in">
+            <div class="glass-card p-4">
+                <p>"Exceptional service and peaceful environment."</p>
+                <small class="text-muted">– Amit Joshi</small>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+.hero-section {
+    height: 90vh;
+    background: url("{% static 'images/resort_bg.jpg' %}") center/cover no-repeat;
+    position: relative;
+}
+
+.hero-overlay {
+    background: rgba(0,0,0,0.55);
+    height: 100%;
+    width: 100%;
+}
+
+.quick-booking-section {
+    background: linear-gradient(135deg, #198754, #145c32);
+    color: white;
+}
+
+.glass-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+</style>
+
+{% endblock %}

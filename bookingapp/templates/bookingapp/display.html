@@ -1,159 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'bookingapp/base.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block content %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<h2 class="text-center mb-4">Booking Records</h2>
 
-    <title>Booking Records</title>
+<div class="card shadow p-3">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Room</th>
+                    <th>Persons</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
 
-    <style>
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(6px);
-            padding: 12px 0;
-        }
+            <tbody>
+            {% for i in data %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.room.name }}</td>
+                    <td>{{ i.persons }}</td>
+                    <td>{{ i.check_in }}</td>
+                    <td>{{ i.check_out }}</td>
+                    <td>₹{{ i.total_price }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6">No records found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        .navbar-nav .nav-link {
-            font-weight: 500;
-            color: #333;
-            margin: 0 6px;
-            position: relative;
-        }
-
-        .navbar-nav .nav-link::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            left: 0;
-            bottom: -4px;
-            background-color: #198754;
-            transition: width 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #198754;
-        }
-
-        .navbar .btn-success {
-            border-radius: 30px;
-            padding: 8px 18px;
-            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- ================= NAVBAR ================= -->
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
-            <div class="container">
-
-                <a class="navbar-brand" href="/index/">
-                    <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="70">
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item"><a href="/index/" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="/rooms/" class="nav-link">Rooms</a></li>
-                        <li class="nav-item"><a href="/gallery/" class="nav-link">Gallery</a></li>
-                        <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
-                        <li class="nav-item"><a href="/contact/" class="nav-link">Contact</a></li>
-
-                        <li class="nav-item ms-3">
-                            <a href="/create_booking/" class="btn btn-success">
-                                Book Now
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </nav>
-    </header>
-
-    <!-- ================= MAIN CONTENT ================= -->
-    <main class="container my-5">
-
-        <div class="card shadow-sm">
-            <div class="card-body">
-
-                <h2 class="mb-4 text-center">Booking Records</h2>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle text-center">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Booking ID</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Persons</th>
-                                <th>Rooms</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for i in data %}
-                            <tr>
-                                <td>{{ i.id }}</td>
-                                <td>{{ i.name }}</td>
-                                <td>{{ i.email }}</td>
-                                <td>{{ i.t_persons }}</td>
-                                <td>{{ i.t_rooms }}</td>
-                                <td>
-                                    <a href="{% url 'update_booking' i.id %}" class="btn btn-warning btn-sm me-1">
-                                        Update
-                                    </a>
-
-                                    <form action="{% url 'delete_booking' i.id %}" method="post"
-                                        style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to delete this booking?');">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="6" class="text-muted text-center">
-                                    No booking records found.
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="text-center mt-4">
-                    <a href="/create_booking/" class="btn btn-success">
-                        Create New Booking
-                    </a>
-                </div>
-
-            </div>
-        </div>
-
-    </main>
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,26 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Booking</title>
-</head>
-<body>
+{% extends 'bookingapp/base.html' %}
 
-<h2>Update Booking</h2>
+{% block content %}
 
-<form method="POST">
-    {% csrf_token %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow p-4">
+            <h3 class="mb-4 text-center">Update Booking</h3>
 
-    <input type="text" name="f_name" value="{{ booking.name }}" required><br><br>
-    <input type="email" name="Email" value="{{ booking.email }}" required><br><br>
+            <form method="POST">
+                {% csrf_token %}
 
-    <input type="date" name="check_in" value="{{ booking.check_in|date:'Y-m-d' }}" required><br><br>
-    <input type="date" name="check_out" value="{{ booking.check_out|date:'Y-m-d' }}" required><br><br>
+                <div class="mb-3">
+                    <label>Full Name</label>
+                    <input type="text" name="name" value="{{ booking.name }}"
+                           class="form-control" required>
+                </div>
 
-    <input type="number" name="No_of_Person" value="{{ booking.t_persons }}" required><br><br>
-    <input type="number" name="No_of_Rooms" value="{{ booking.t_rooms }}" required><br><br>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ booking.email }}"
+                           class="form-control" required>
+                </div>
 
-    <button type="submit">Update</button>
-</form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Check-in</label>
+                        <input type="date" name="check_in"
+                               value="{{ booking.check_in|date:'Y-m-d' }}"
+                               class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Check-out</label>
+                        <input type="date" name="check_out"
+                               value="{{ booking.check_out|date:'Y-m-d' }}"
+                               class="form-control" required>
+                    </div>
+                </div>
 
-</body>
-</html>
+                <div class="mb-3">
+                    <label>No. of Persons</label>
+                    <input type="number" name="persons"
+                           value="{{ booking.persons }}"
+                           class="form-control" required>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">
+                        Update Booking
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

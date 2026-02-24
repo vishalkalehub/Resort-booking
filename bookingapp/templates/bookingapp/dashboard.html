@@ -1,0 +1,48 @@
+{% extends 'bookingapp/base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4 fade-in">Admin Overview</h2>
+
+<div class="row g-4 fade-in">
+
+    <div class="col-md-3">
+        <div class="glass-card p-4 text-center stat-card">
+            <h6>Total Bookings</h6>
+            <h2>{{ total_bookings }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="glass-card p-4 text-center stat-card">
+            <h6>Total Revenue</h6>
+            <h2>₹{{ total_revenue }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="glass-card p-4 text-center stat-card">
+            <h6>Total Rooms</h6>
+            <h2>{{ total_rooms }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="glass-card p-4 text-center stat-card">
+            <h6>Total Messages</h6>
+            <h2>{{ total_contacts }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<style>
+.stat-card {
+    transition: 0.3s ease;
+}
+.stat-card:hover {
+    transform: translateY(-8px);
+}
+</style>
+
+{% endblock %}

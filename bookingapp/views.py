@@ -1,107 +1,142 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Booking_table
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Sum
+from .models import Room, Booking, ContactMessage, GalleryImage
+from .forms import BookingForm
 from datetime import datetime
-from .models import ContactMessage
-from .models import Room
+from django.http import JsonResponse
 
+# -----------------------------
+# HTML VIEWS
+# -----------------------------
 
-# ---------------- HOME ----------------
 def index_view(request):
     return render(request, 'bookingapp/index.html')
 
-
-# ---------------- CREATE BOOKING ----------------
-def create_view(request):
-    if request.method == 'POST':
-        check_in_str = request.POST.get('check_in')
-        check_out_str = request.POST.get('check_out')
-
-        # 🔒 Safety check
-        if not check_in_str or not check_out_str:
-            messages.error(request, "Please select check-in and check-out dates.")
-            return redirect('/create_booking/')
-
-        check_in = datetime.strptime(check_in_str, "%Y-%m-%d").date()
-        check_out = datetime.strptime(check_out_str, "%Y-%m-%d").date()
-
-        total_days = (check_out - check_in).days
-
-        if total_days <= 0:
-            messages.error(request, "Check-out date must be after check-in date.")
-            return redirect('/create_booking/')
-
-        Booking_table.objects.create(
-            name=request.POST.get('f_name'),
-            email=request.POST.get('Email'),
-            t_persons=request.POST.get('No_of_Person'),
-            t_rooms=request.POST.get('No_of_Rooms'),
-            check_in=check_in,
-            check_out=check_out,
-            total_days=total_days, 
-        )
-
-        messages.success(request, f"Booking confirmed for {total_days} days!")
-        return redirect('/display_booking/')
-
-    return render(request, 'bookingapp/create.html')
-
-
-# ---------------- ROOMS ----------------
 def rooms_view(request):
     rooms = Room.objects.all()
+
+    check_in = request.GET.get('check_in')
+    check_out = request.GET.get('check_out')
+
+    if check_in and check_out:
+        try:
+            check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
+            check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
+
+            available_rooms = []
+
+            for room in rooms:
+                if room.is_available(check_in_date, check_out_date):
+                    available_rooms.append(room.id)
+
+            rooms = Room.objects.filter(id__in=available_rooms)
+
+        except ValueError:
+            pass  # if invalid date format
+
     return render(request, 'bookingapp/rooms.html', {'rooms': rooms})
 
+def room_detail_view(request, id):
+    room = get_object_or_404(Room, id=id)
 
-# ---------------- DISPLAY BOOKINGS ----------------
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+
+        if form.is_valid():
+            booking = form.save(commit=False)
+
+            # Attach room BEFORE saving
+            booking.room = room
+
+            booking.save()
+
+            return redirect("display_booking")
+
+    else:
+        form = BookingForm()
+
+    return render(request, "bookingapp/room_detail.html", {
+        "room": room,
+        "form": form
+    })
+
+
+def gallery_view(request):
+    images = GalleryImage.objects.all().order_by('-created_at')
+    return render(request, 'bookingapp/gallery.html', {'images': images})
+
+def create_view(request):
+
+    form = BookingForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Booking confirmed successfully!")
+            return redirect("display_booking")
+        else:
+            print("FORM ERRORS:", form.errors)  # 🔥 ADD THIS
+
+    return render(request, "bookingapp/create.html", {"form": form})
+
+def check_availability(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+
+    check_in = request.GET.get('check_in')
+    check_out = request.GET.get('check_out')
+
+    if not check_in or not check_out:
+        return JsonResponse({"error": "Dates required"}, status=400)
+
+    check_in_date = datetime.strptime(check_in, "%Y-%m-%d").date()
+    check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
+
+    available = room.is_available(check_in_date, check_out_date)
+
+    if available:
+        return JsonResponse({"available": True})
+    else:
+        return JsonResponse({
+            "available": False,
+            "booked_dates": list(room.get_booked_dates())
+        })
+    
+@login_required
 def display_view(request):
-    data = Booking_table.objects.all()
+    data = Booking.objects.all()
     return render(request, 'bookingapp/display.html', {'data': data})
 
 
-# ---------------- UPDATE BOOKING ----------------
 def update_booking(request, id):
-    booking = get_object_or_404(Booking_table, id=id)
+    booking = get_object_or_404(Booking, id=id)
 
     if request.method == 'POST':
-        booking.name = request.POST.get('f_name')
-        booking.email = request.POST.get('Email')
-        booking.t_persons = request.POST.get('No_of_Person')
-        booking.t_rooms = request.POST.get('No_of_Rooms')
+        form = BookingForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Booking updated successfully!")
+            return redirect('display_booking')
+    else:
+        form = BookingForm(instance=booking)
 
-        check_in = datetime.strptime(request.POST.get('check_in'), "%Y-%m-%d").date()
-        check_out = datetime.strptime(request.POST.get('check_out'), "%Y-%m-%d").date()
-
-        booking.check_in = check_in
-        booking.check_out = check_out
-        booking.total_days = (check_out - check_in).days
-
-        booking.save()
-        messages.success(request, "Booking updated successfully!")
-        return redirect('/display_booking/')
-
-    return render(request, 'bookingapp/update.html', {'booking': booking})
+    return render(request, 'bookingapp/update.html', {'form': form})
 
 
-# ---------------- DELETE BOOKING ----------------
 def delete_booking(request, id):
-    booking = get_object_or_404(Booking_table, id=id)
+    booking = get_object_or_404(Booking, id=id)
 
     if request.method == 'POST':
         booking.delete()
-        messages.success(request, "Booking deleted successfully!")
-        return redirect('/display_booking/')
+        messages.success(request, "Booking deleted!")
+        return redirect('display_booking')
 
     return render(request, 'bookingapp/delete.html', {'booking': booking})
 
-def gallery_view(request):
-    return render(request, 'bookingapp/gallery.html')
-
-def about_view(request):
-    return render(request, 'bookingapp/about.html')
 
 def contact_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         ContactMessage.objects.create(
             name=request.POST.get('name'),
             email=request.POST.get('email'),
@@ -111,5 +146,52 @@ def contact_view(request):
 
     return render(request, 'bookingapp/contact.html')
 
+
+def about_view(request):
+    return render(request, 'bookingapp/about.html')
+
+
 def thank_you(request):
     return render(request, 'bookingapp/thank_you.html')
+
+
+def admin_only(user):
+    return user.is_superuser
+
+
+@user_passes_test(admin_only)
+def dashboard_view(request):
+    total_revenue = Booking.objects.aggregate(
+        Sum('total_price')
+    )['total_price__sum'] or 0
+
+    context = {
+        'total_bookings': Booking.objects.count(),
+        'total_revenue': total_revenue,
+        'total_rooms': Room.objects.count(),
+        'total_contacts': ContactMessage.objects.count(),
+    }
+
+    return render(request, 'bookingapp/dashboard.html', context)
+
+
+# -----------------------------
+# API VIEWSETS
+# -----------------------------
+
+from rest_framework import viewsets, permissions
+from .serializers import RoomSerializer, BookingSerializer
+
+
+class RoomViewSet(viewsets.ModelViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class BookingViewSet(viewsets.ModelViewSet):
+    serializer_class = BookingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Booking.objects.filter(user=self.request.user)

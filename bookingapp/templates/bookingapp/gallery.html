@@ -1,141 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'bookingapp/base.html' %}
 
-    <title>Gallery | Sunshine Resort</title>
+{% block content %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<h2 class="text-center mb-5 fade-in">Resort Gallery</h2>
 
-    <style>
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(6px);
-            padding: 12px 0;
-        }
+<div class="row g-4">
 
-        .navbar-nav .nav-link {
-            font-weight: 500;
-            color: #333;
-            margin: 0 6px;
-            position: relative;
-        }
+    {% for image in images %}
+    <div class="col-md-4 fade-in">
 
-        .navbar-nav .nav-link::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            left: 0;
-            bottom: -4px;
-            background-color: #198754;
-            transition: width 0.3s ease;
-        }
+        <div class="gallery-card">
 
-        .navbar-nav .nav-link:hover::after,
-        .navbar-nav .nav-link.active::after {
-            width: 100%;
-        }
-
-        .navbar-nav .nav-link.active {
-            color: #198754;
-            font-weight: 600;
-        }
-
-        .gallery-img {
-            border-radius: 12px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .gallery-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-    </style>
-</head>
-
-<body>
-
-<!-- ================= NAVBAR ================= -->
-<header class="sticky-top">
-    <nav class="navbar navbar-expand-lg border-bottom shadow-sm">
-        <div class="container">
-
-            <a class="navbar-brand" href="/index/">
-                <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="70">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item">
-                        <a href="/index/" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/rooms/" class="nav-link">Rooms</a>
-                    </li>
-                    <li class="nav-item">
-                        <!-- ACTIVE GALLERY -->
-                        <a href="/gallery/" class="nav-link active">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/about/" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/contact/" class="nav-link">Contact</a>
-                    </li>
-
-                    <li class="nav-item ms-3">
-                        <a href="/create_booking/" class="btn btn-success rounded-pill px-4">
-                            Book Now
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <img src="{{ image.image.url }}"
+                 class="img-fluid rounded-4 shadow gallery-img"
+                 data-bs-toggle="modal"
+                 data-bs-target="#imageModal"
+                 onclick="showImage(this.src)">
 
         </div>
-    </nav>
-</header>
-    
-<!-- ================= GALLERY ================= -->
-<main class="container my-5">
 
-    <h2 class="text-center mb-4">Our Resort Gallery</h2>
-    <p class="text-center text-muted mb-5">
-        Explore the beauty, comfort, and luxury of Sunshine Resort
-    </p>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <img src="{% static 'images/Resort_view.jpg' %}" class="img-fluid gallery-img" alt="Resort View">
-        </div>
-        <div class="col-md-4">
-            <img src="{% static 'images/luxury_room.jpg' %}" class="img-fluid gallery-img" alt="Luxury Room">
-        </div>
-        <div class="col-md-4">
-            <img src="{% static 'images/Swimming_pool.jpg' %}" class="img-fluid gallery-img" alt="Swimming Pool">
-        </div>
-        <div class="col-md-4">
-            <img src="{% static 'images/Garden_area.jpg' %}" class="img-fluid gallery-img" alt="Garden Area">
-        </div>
-        <div class="col-md-4">
-            <img src="{% static 'images/restaurant.jpeg' %}" class="img-fluid gallery-img" alt="Restaurant">
-        </div>
-        <div class="col-md-4">
-            <img src="{% static 'images/Evening_view.jpg' %}" class="img-fluid gallery-img" alt="Evening Resort View">
-        </div>
     </div>
+    {% empty %}
+    <div class="text-center text-muted">
+        No images available.
+    </div>
+    {% endfor %}
 
-</main>
+</div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 bg-transparent">
+      <div class="modal-body text-center">
+        <img id="modalImage" class="img-fluid rounded-4 shadow-lg">
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.gallery-img {
+    transition: 0.4s ease;
+    cursor: pointer;
+}
+
+.gallery-img:hover {
+    transform: scale(1.05);
+}
+</style>
+
+<script>
+function showImage(src) {
+    document.getElementById("modalImage").src = src;
+}
+</script>
+
+{% endblock %}
