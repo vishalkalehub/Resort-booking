@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/', include('bookingapp.api_urls')),
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),
+    
 ]
 
 if settings.DEBUG:

@@ -6,6 +6,8 @@ from .models import Room, Booking, ContactMessage, GalleryImage
 from .forms import BookingForm
 from datetime import datetime
 from django.http import JsonResponse
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 # -----------------------------
 # HTML VIEWS
@@ -195,3 +197,15 @@ class BookingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user)
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)   # ✅ Auto login after register
+            return redirect('/')   # Redirect to home
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'register.html', {'form': form})       

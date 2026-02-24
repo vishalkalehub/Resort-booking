@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', index_view, name='index'),
@@ -15,4 +16,7 @@ urlpatterns = [
     path('dashboard/', dashboard_view, name='dashboard'),
     path('thank-you/', thank_you, name='thank_you'),
     path('check-availability/<int:room_id>/', check_availability, name='check_availability'),
+     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', register, name='register'),
 ]

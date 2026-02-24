@@ -5,7 +5,6 @@
     <title>Sunshine Resort</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="description" content="Luxury Resort Booking Experience">
 
     <link rel="icon" href="{% static 'images/logo.png' %}">
@@ -47,7 +46,7 @@
 <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
     <div class="container">
 
-        <!-- Logo / Brand -->
+        <!-- Logo -->
         <a class="navbar-brand fw-bold text-success" href="{% url 'index' %}">
             🏨 Sunshine Resort
         </a>
@@ -63,7 +62,6 @@
 
             <ul class="navbar-nav align-items-center">
 
-                <!-- Home -->
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/' %}active fw-bold text-success{% endif %}"
                        href="{% url 'index' %}">
@@ -71,46 +69,48 @@
                     </a>
                 </li>
 
-                <!-- Rooms -->
                 <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'rooms' %}">
+                    <a class="nav-link" href="{% url 'rooms' %}">
                         Rooms
                     </a>
                 </li>
 
-                <!-- Gallery -->
                 <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'gallery' %}">
+                    <a class="nav-link" href="{% url 'gallery' %}">
                         Gallery
                     </a>
                 </li>
 
-                <!-- About -->
                 <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'about' %}">
+                    <a class="nav-link" href="{% url 'about' %}">
                         About
                     </a>
                 </li>
 
-                <!-- Contact -->
                 <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'contact' %}">
+                    <a class="nav-link" href="{% url 'contact' %}">
                         Contact
                     </a>
                 </li>
 
                 {% if user.is_authenticated %}
+
+                    <!-- Username -->
                     <li class="nav-item ms-3">
+                        <span class="nav-link fw-bold text-success">
+                            👋 {{ user.username }}
+                        </span>
+                    </li>
+
+                    <!-- Dashboard -->
+                    <li class="nav-item ms-2">
                         <a href="{% url 'dashboard' %}"
                            class="btn btn-outline-success btn-sm rounded-pill">
                             Dashboard
                         </a>
                     </li>
 
+                    <!-- Logout -->
                     <li class="nav-item ms-2">
                         <form action="{% url 'logout' %}" method="POST">
                             {% csrf_token %}
@@ -119,13 +119,25 @@
                             </button>
                         </form>
                     </li>
+
                 {% else %}
+
+                    <!-- Login -->
                     <li class="nav-item ms-3">
                         <a href="{% url 'login' %}"
                            class="btn btn-success btn-sm rounded-pill">
                             Login
                         </a>
                     </li>
+
+                    <!-- Register -->
+                    <li class="nav-item ms-2">
+                        <a href="{% url 'register' %}"
+                           class="btn btn-outline-success btn-sm rounded-pill">
+                            Register
+                        </a>
+                    </li>
+
                 {% endif %}
 
             </ul>
