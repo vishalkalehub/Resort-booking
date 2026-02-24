@@ -2,10 +2,12 @@ asgiref==3.11.1
 distlib==0.4.0
 Django==6.0.2
 djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
 filelock==3.20.2
 gunicorn==25.1.0
 packaging==26.0
 platformdirs==4.5.1
+PyJWT==2.11.0
 sqlparse==0.5.5
 tzdata==2025.3
 virtualenv==20.35.4
