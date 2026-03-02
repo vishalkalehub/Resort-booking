@@ -1,1 +1,1 @@
-web: gunicorn --chdir . sunshineresort.wsgi:application
+web: gunicorn config.wsgi:application
