@@ -1,1 +1,1 @@
-web: gunicorn sunshineresort.wsgi
+web: gunicorn sunshineresort.wsgi:application
