@@ -8,7 +8,10 @@ from datetime import datetime
 from django.http import JsonResponse
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-
+from .forms import RegisterForm
+from django.contrib.auth.views import LoginView
+from .forms import LoginForm
+from django.core.exceptions import ValidationError
 # -----------------------------
 # HTML VIEWS
 # -----------------------------
@@ -40,6 +43,8 @@ def rooms_view(request):
 
     return render(request, 'bookingapp/rooms.html', {'rooms': rooms})
 
+
+@login_required
 def room_detail_view(request, id):
     room = get_object_or_404(Room, id=id)
 
@@ -48,13 +53,21 @@ def room_detail_view(request, id):
 
         if form.is_valid():
             booking = form.save(commit=False)
-
-            # Attach room BEFORE saving
             booking.room = room
+            booking.user = request.user
 
-            booking.save()
+            try:
+                booking.save()
+                messages.success(request, "🎉 Booking confirmed successfully!")
+                return redirect("index")
 
-            return redirect("display_booking")
+            except ValidationError as e:
+                # Attach error to form properly
+                for error in e.messages:
+                    form.add_error(None, error)
+
+        else:
+            print("FORM ERRORS:", form.errors)
 
     else:
         form = BookingForm()
@@ -63,7 +76,6 @@ def room_detail_view(request, id):
         "room": room,
         "form": form
     })
-
 
 def gallery_view(request):
     images = GalleryImage.objects.all().order_by('-created_at')
@@ -200,7 +212,7 @@ class BookingViewSet(viewsets.ModelViewSet):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)   # ✅ Auto login after register
@@ -209,3 +221,11 @@ def register(request):
         form = UserCreationForm()
 
     return render(request, 'registration/register.html', {'form': form})       
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+    authentication_form = LoginForm
+
+    def form_valid(self, form):
+        messages.success(self.request, "Login successful! Welcome back.")
+        return super().form_valid(form)

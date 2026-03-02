@@ -17,8 +17,13 @@
         }
 
         .navbar {
-            background: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.9);
             backdrop-filter: blur(12px);
+        }
+
+        .navbar .nav-link.active {
+            font-weight: 600;
+            color: #198754 !important;
         }
 
         .btn-success {
@@ -63,46 +68,48 @@
             <ul class="navbar-nav align-items-center">
 
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active fw-bold text-success{% endif %}"
+                    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
                        href="{% url 'index' %}">
                         Home
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'rooms' %}">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'rooms' %}active{% endif %}"
+                       href="{% url 'rooms' %}">
                         Rooms
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'gallery' %}">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}"
+                       href="{% url 'gallery' %}">
                         Gallery
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+                       href="{% url 'about' %}">
                         About
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact' %}">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}"
+                       href="{% url 'contact' %}">
                         Contact
                     </a>
                 </li>
 
                 {% if user.is_authenticated %}
 
-                    <!-- Username -->
                     <li class="nav-item ms-3">
                         <span class="nav-link fw-bold text-success">
                             👋 {{ user.username }}
                         </span>
                     </li>
 
-                    <!-- Dashboard -->
                     <li class="nav-item ms-2">
                         <a href="{% url 'dashboard' %}"
                            class="btn btn-outline-success btn-sm rounded-pill">
@@ -110,7 +117,6 @@
                         </a>
                     </li>
 
-                    <!-- Logout -->
                     <li class="nav-item ms-2">
                         <form action="{% url 'logout' %}" method="POST">
                             {% csrf_token %}
@@ -122,7 +128,6 @@
 
                 {% else %}
 
-                    <!-- Login -->
                     <li class="nav-item ms-3">
                         <a href="{% url 'login' %}"
                            class="btn btn-success btn-sm rounded-pill">
@@ -130,7 +135,6 @@
                         </a>
                     </li>
 
-                    <!-- Register -->
                     <li class="nav-item ms-2">
                         <a href="{% url 'register' %}"
                            class="btn btn-outline-success btn-sm rounded-pill">
@@ -145,7 +149,19 @@
     </div>
 </nav>
 
-<div style="margin-top:100px;" class="container">
+<!-- Main Content -->
+<div style="margin-top:110px;" class="container">
+
+    <!-- Django Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% block content %}{% endblock %}
 </div>
 
